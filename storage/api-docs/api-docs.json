@@ -1,0 +1,313 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "YouCare",
+        "description": "YouCare API is a platform designed to facilitate volunteerism by connecting organizers of events with individuals willing to contribute their time and skills. Through this API, organizers can create announcements for various initiatives, specifying details such as event type, description, date, location, and required skills. Volunteers can browse these announcements, filtering them based on event type or location, and apply to participate in projects aligning with their interests and availability. The API also supports authentication mechanisms, allowing secure access to routes requiring authentication. Additionally, organizers have the ability to rate volunteers after each event, providing feedback to the community. Administrators can manage organizers, announcements, and volunteers, as well as view statistics related to events, organizers, and volunteers. With comprehensive documentation provided through Swagger, utilizing the YouCare API is made straightforward and accessible.",
+        "contact": {
+            "email": "test@test.com"
+        },
+        "license": {
+            "name": "API License",
+            "url": "http://www.example.com/license"
+        },
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/users": {
+            "get": {
+                "tags": [
+                    "Admin"
+                ],
+                "summary": "Get all users",
+                "description": "Display a listing of the users.",
+                "operationId": "8adae59a0569c48f6345ff614a9b2b95",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated. Authentication is required."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Admin"
+                ],
+                "summary": "Create a new user",
+                "description": "Store a newly created user in storage.",
+                "operationId": "12e3448194f3d5911d9a38e1a86a947a",
+                "responses": {
+                    "201": {
+                        "description": "User created successfully"
+                    },
+                    "400": {
+                        "description": "Invalid request"
+                    }
+                }
+            }
+        },
+        "/api/users/{id}": {
+            "get": {
+                "tags": [
+                    "Admin"
+                ],
+                "summary": "Display a specific user",
+                "description": "Display the specified user.",
+                "operationId": "d39d8feb548e828702c51597daeaaaea",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the user",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Admin"
+                ],
+                "summary": "Update a user",
+                "description": "Update the specified user in storage.",
+                "operationId": "d49f3fadfa01b49986b7f87f1149d9ef",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the user",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User updated successfully"
+                    },
+                    "400": {
+                        "description": "Invalid request"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Admin"
+                ],
+                "summary": "Delete a user",
+                "description": "Remove the specified user from storage.",
+                "operationId": "16e9504049ab46be03d9dbf00fcac484",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the user",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User deleted successfully"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            }
+        },
+        "/api/annonce": {
+            "get": {
+                "tags": [
+                    "Annonces"
+                ],
+                "summary": "Get a list of annonces",
+                "operationId": "e2f2ba4ea9ace78692d15b12bee0485e",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Invalid request"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Annonces"
+                ],
+                "summary": "Update annonce in database",
+                "operationId": "1db46aa6315d97617e9d3e332d3644b3",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Invalid request"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Annonces"
+                ],
+                "summary": "Store annonce in database",
+                "operationId": "ce9eab9d12eea6c6ba95504f5f5b7aaf",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Invalid request"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Annonces"
+                ],
+                "summary": "Delete annonce",
+                "operationId": "f160456410f044ffd03b97288402de4b",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Invalid request"
+                    }
+                }
+            }
+        },
+        "/annonce": {
+            "get": {
+                "tags": [
+                    "Annonces"
+                ],
+                "summary": "Show one annonce",
+                "operationId": "0b44200ac6dd2bba5074729a3515ded0",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Invalid request"
+                    }
+                }
+            }
+        },
+        "/api/annonces/filter": {
+            "get": {
+                "tags": [
+                    "Annonces"
+                ],
+                "summary": "Filter annonces by type and also location",
+                "operationId": "5a14df746c9f4eedfe166e90a9e1a977",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Invalid request"
+                    }
+                }
+            }
+        },
+        "/api/user/applications": {
+            "get": {
+                "tags": [
+                    "Application"
+                ],
+                "summary": "Display applications of user",
+                "operationId": "858a7dd82614ef1fe918779f521f0c72",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Invalid request"
+                    }
+                }
+            }
+        },
+        "/api/user/apply": {
+            "post": {
+                "tags": [
+                    "Application"
+                ],
+                "summary": "User can apply for an annonce",
+                "operationId": "7d1b3875ebf30414c5eac57df0463cfa",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Invalid request"
+                    }
+                }
+            }
+        },
+        "/api/organizer/applications": {
+            "get": {
+                "tags": [
+                    "Application"
+                ],
+                "summary": "Display applications made for the organizer's annonce",
+                "operationId": "8b572b5ff7d736a949cb8f49efe79574",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Invalid request"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Application"
+                ],
+                "summary": "Approve or decline a user application",
+                "operationId": "b6a629e5869a7b7e3f6e37a6c803e1b2",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Invalid request"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    }
+}
