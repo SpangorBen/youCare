@@ -157,6 +157,6 @@ class AdminController extends Controller
     {
         $user = User::findOrFail($id);
         $user->delete();
-        return response()->json(['message' => 'User soft deleted successfully'], 200);
+        return response()->json(['message' => 'User soft deleted successfully'], 204);
     }
 }

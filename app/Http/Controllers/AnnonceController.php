@@ -17,12 +17,6 @@ use Illuminate\Http\Request;
  *          name="API License",
  *          url="http://www.example.com/license"
  *      ),
- *      @OA\SecurityScheme(
- *          type="http",
- *          securityScheme="bearerAuth",
- *          scheme="bearer",
- *          bearerFormat="JWT"
- *      )
  * )
  * @OA\SecurityScheme(
  *
@@ -135,7 +129,7 @@ class AnnonceController extends Controller
         $annonce = Annonce::findOrFail($id);
         $annonce->delete();
 
-        return response()->json(['message' => 'Annonce deleted successfully']);
+        return response()->json(['message' => 'Annonce deleted successfully'], 204);
     }
 
     /**

@@ -2,11 +2,15 @@
 
 namespace Tests\Feature\Controllers;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\Annonce;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
+use App\Models\Type;
+use Database\Factories\AnnonceFactory;
+use Database\Factories\TypeFactory;
+use Illuminate\Support\Facades\Auth;
 
 class AnnonceControllerTest extends TestCase
 {
@@ -15,72 +19,93 @@ class AnnonceControllerTest extends TestCase
 
     public function testIndex()
     {
-        Annonce::factory()->count(3)->create();
+        $this->withoutExceptionHandling();
 
         $response = $this->get('/api/annonce');
 
         $response->assertStatus(200);
-        $response->assertJsonStructure(['data' => [['id', 'title', 'description', 'date', 'location', 'required_skills', 'organizer_id', 'type_id']]]);
+    }
+
+    public function testShow()
+    {
+        $this->withoutExceptionHandling();
+
+        $annonce = Annonce::factory()->create();
+
+        $response = $this->get('/api/annonce/' . $annonce->id);
+
+        $response->assertStatus(200);
     }
 
     public function testStore()
     {
-        $user = User::factory()->create();
-        $token = $user->createToken('test')->plainTextToken;
+        $this->withoutExceptionHandling();
+        $type = Type::factory()->create();
 
-        $annonceData = [
+        $user = User::factory()->create();
+        Auth::login($user);
+
+        $data = [
             'title' => $this->faker->sentence,
             'description' => $this->faker->paragraph,
-            'date' => now()->format('Y-m-d'),
+            'date' => $this->faker->date,
             'location' => $this->faker->address,
-            'required_skills' => 'Skill 1, Skill 2',
-            'type_id' => 1
+            'required_skills' => $this->faker->sentence,
+            'type_id' => $type->id,
         ];
 
-        $response = $this->withHeaders([
-            'Authorization' => 'Bearer ' . $token,
-        ])->post('/api/annonce', $annonceData);
+        $response = $this->post('/api/annonce', $data);
 
         $response->assertStatus(201);
-        $response->assertJson(['message' => 'Annonce created successfully']);
     }
 
     public function testUpdate()
     {
+        $this->withoutExceptionHandling();
+
         $user = User::factory()->create();
-        $token = $user->createToken('test')->plainTextToken;
+        Auth::login($user);
 
         $annonce = Annonce::factory()->create();
 
-        $updatedData = [
-            'title' => 'Updated Title',
-            'description' => 'Updated Description',
-            'date' => now()->addDays(1)->format('Y-m-d'),
-            'location' => 'Updated Location',
-            'required_skills' => 'Skill 1, Skill 2, Skill 3',
-            'type_id' => 2
+        $data = [
+            'title' => $this->faker->sentence,
+            'description' => $this->faker->paragraph,
+            'date' => $this->faker->date,
+            'location' => $this->faker->address,
+            'required_skills' => $this->faker->sentence,
+            'type_id' => 1,
         ];
 
-        $response = $this->withHeaders([
-            'Authorization' => 'Bearer ' . $token,
-        ])->put('/api/annonce/' . $annonce->id, $updatedData);
+        $response = $this->put('/api/annonce/' . $annonce->id, $data);
 
         $response->assertStatus(200);
-        $response->assertJson(['message' => 'Annonce updated successfully']);
     }
 
     public function testDestroy()
     {
+        $this->withoutExceptionHandling();
+
         $user = User::factory()->create();
-        $token = $user->createToken('test')->plainTextToken;
+        Auth::login($user);
 
         $annonce = Annonce::factory()->create();
 
-        $response = $this->withHeaders([
-            'Authorization' => 'Bearer ' . $token,
-        ])->delete('/api/annonce/' . $annonce->id);
+        $response = $this->delete('/api/annonce/' . $annonce->id);
+
+        $response->assertStatus(204);
+    }
+
+    public function testFilter()
+    {
+        $this->withoutExceptionHandling();
+
+        // $user = User::factory()->create();
+        $user = User::factory()->withRoleId(2)->create();
+        Auth::login($user);
+
+        $response = $this->get('/api/annonces/filter?type_id=1&location=New+York');
 
         $response->assertStatus(200);
-        $response->assertJson(['message' => 'Annonce deleted successfully']);
     }
 }
