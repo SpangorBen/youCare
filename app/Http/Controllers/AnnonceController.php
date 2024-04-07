@@ -40,6 +40,7 @@ class AnnonceController extends Controller
      */
     public function index()
     {
+        // $annonces = Annonce::where('user_id', Auth::user()->id)->get();
         $annonces = Annonce::all();
         return response()->json(['data' => $annonces]);
     }
@@ -105,12 +106,16 @@ class AnnonceController extends Controller
             'date' => 'required|date',
             'location' => 'required|string',
             'required_skills' => 'required|string',
-            // 'organizer_id' => 'required|exists:users,id',
+            // 'organizer_id' => 'required',y   
             'type_id' => 'required|exists:types,id',
         ]);
 
-        $request['organizer_id'] = auth()->user()->id;
-        $annonce->update($request->all());
+        // $request['organizer_id'] = auth()->user()->id;
+        if ($annonce->organizer_id === auth()->user()->id) {
+            $annonce->update($request->all());
+        } else{
+            return response()->json(['message' => 'You are not allowed']);
+        }
 
         return response()->json(['message' => 'Annonce updated successfully', 'data' => $annonce]);
     }
@@ -127,6 +132,7 @@ class AnnonceController extends Controller
     public function destroy($id)
     {
         $annonce = Annonce::findOrFail($id);
+        $user_id = $annonce->organizer_id;
         $annonce->delete();
 
         return response()->json(['message' => 'Annonce deleted successfully'], 204);

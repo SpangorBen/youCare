@@ -27,14 +27,14 @@ Route::controller(AuthController::class)->group(function () {
 
 // Organizer
 Route::get('/annonce', [AnnonceController::class, 'index']);
-// Route::middleware('auth:api', 'role:organizer')->group(function () {
+Route::middleware('auth:api', 'role:organizer')->group(function () {
     Route::get('/annonce/{id}', [AnnonceController::class, 'show']);
     Route::post('/annonce', [AnnonceController::class, 'store']);
     Route::put('/annonce/{id}', [AnnonceController::class, 'update']);
     Route::delete('/annonce/{id}', [AnnonceController::class, 'destroy']);
     Route::put('/organizer/applications/{id}', [ApplicationController::class, 'updateStatus']);
     Route::get('/organizer/applications', [ApplicationController::class, 'index']);
-// });
+});
 
 //Volunteer
     Route::get('/annonces/filter', [AnnonceController::class, 'filter']);
